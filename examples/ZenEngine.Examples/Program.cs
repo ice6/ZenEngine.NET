@@ -14,6 +14,9 @@ class Program
 
         await RunSimpleDecisionExample();
         await RunPricingDecisionExample();
+        await RunCompanyAnalysisExample();
+        await RunDynamicPricingExample();
+        await RunRealTimeQuotationExample();
         await RunMemoryLoaderExample();
         await RunTracingExample();
 
@@ -85,9 +88,115 @@ class Program
         Console.WriteLine();
     }
 
+    static async Task RunCompanyAnalysisExample()
+    {
+        Console.WriteLine("🏢 Example 3: Company Analysis");
+        Console.WriteLine("------------------------------");
+
+        try
+        {
+            var engine = new DecisionEngine(new FilesystemLoader("./decisions"));
+            var context = new
+            {
+                country = "US",
+                dateInc = "2014-12-31T16:00:00.000Z",
+                industryType = "HC",
+                annualRevenue = 1_500_000,
+                creditRating = 770,
+                companySize = "medium"
+            };
+
+            var result = await engine.EvaluateAsync("1.company-analysis.json", context);
+
+            Console.WriteLine("Context:");
+            Console.WriteLine(JsonSerializer.Serialize(context, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine("Result:");
+            Console.WriteLine(JsonSerializer.Serialize(result.Result, new JsonSerializerOptions { WriteIndented = true }));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error: {ex.Message}");
+        }
+
+        Console.WriteLine();
+    }
+
+    static async Task RunDynamicPricingExample()
+    {
+        Console.WriteLine("📈 Example 4: Dynamic Pricing");
+        Console.WriteLine("-----------------------------");
+
+        try
+        {
+            var engine = new DecisionEngine(new FilesystemLoader("./decisions"));
+            var context = new
+            {
+                pricing = new
+                {
+                    basePrice = 100,
+                    demand = "high",
+                    timeOfDay = "normal",
+                    competitorPrice = "equal",
+                    customerSegment = "regular"
+                }
+            };
+
+            var result = await engine.EvaluateAsync("2.dynamic-pricing.json", context);
+
+            Console.WriteLine("Context:");
+            Console.WriteLine(JsonSerializer.Serialize(context, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine("Result:");
+            Console.WriteLine(JsonSerializer.Serialize(result.Result, new JsonSerializerOptions { WriteIndented = true }));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error: {ex.Message}");
+        }
+
+        Console.WriteLine();
+    }
+
+    static async Task RunRealTimeQuotationExample()
+    {
+        Console.WriteLine("🧾 Example 5: Real-Time Quotation");
+        Console.WriteLine("--------------------------------");
+
+        try
+        {
+            var engine = new DecisionEngine(new FilesystemLoader("./decisions"));
+            var context = new
+            {
+                generalLiability = 5_000_000,
+                commercialProperty = 1_000_000,
+                professionalIndemnity = 1_000_000
+            };
+
+            var result = await engine.EvaluateAsync("3.real-time-quotation.json", context);
+
+            Console.WriteLine("Context:");
+            Console.WriteLine(JsonSerializer.Serialize(context, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine("Result:");
+            Console.WriteLine(JsonSerializer.Serialize(result.Result, new JsonSerializerOptions { WriteIndented = true }));
+            Console.WriteLine("Expected:");
+            Console.WriteLine(JsonSerializer.Serialize(new
+            {
+                paymentFee = "300.3",
+                premium = "7800",
+                tax = "780",
+                total = "8880.3"
+            }, new JsonSerializerOptions { WriteIndented = true }));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Error: {ex.Message}");
+        }
+
+        Console.WriteLine();
+    }
+
     static async Task RunMemoryLoaderExample()
     {
-        Console.WriteLine("💾 Example 3: Memory Loader");
+        Console.WriteLine("💾 Example 6: Memory Loader");
         Console.WriteLine("---------------------------");
 
         try
@@ -149,7 +258,7 @@ class Program
 
     static async Task RunTracingExample()
     {
-        Console.WriteLine("🔍 Example 4: Execution Tracing and Performance");
+        Console.WriteLine("🔍 Example 7: Execution Tracing and Performance");
         Console.WriteLine("-----------------------------------------------");
 
         try

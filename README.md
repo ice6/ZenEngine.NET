@@ -80,26 +80,33 @@ Console.WriteLine(JsonSerializer.Serialize(result.Result));
 ## Node Types
 
 ### Input Node
+
 Entry point for decision data.
 
 ### Output Node  
+
 Final result of the decision execution.
 
 ### Decision Table Node
+
 Spreadsheet-like rules evaluation with hit policies (first, collect).
 
 ### Expression Node
+
 Transform data using expressions with support for nested field assignment.
 
 ### Switch Node
+
 Conditional branching based on expression evaluation.
 
 ## Loaders
 
 ### NoopLoader (Default)
+
 For direct decision creation without loading from external sources.
 
 ### FilesystemLoader
+
 Load decisions from JSON files on disk.
 
 ```csharp
@@ -108,6 +115,7 @@ var result = await engine.EvaluateAsync("pricing.json", context);
 ```
 
 ### MemoryLoader
+
 In-memory decision storage.
 
 ```csharp
@@ -117,6 +125,7 @@ var engine = new DecisionEngine(loader);
 ```
 
 ### ClosureLoader
+
 Custom loading logic via delegates.
 
 ```csharp
@@ -129,6 +138,7 @@ var loader = new ClosureLoader(async key => {
 ## Expression Language
 
 The expression evaluator supports:
+
 - Field access: `customer.age`, `input.value`
 - Nested field assignment: `"nested.field": "expression"`
 - Literals: numbers, strings, booleans
